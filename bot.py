@@ -1,10 +1,14 @@
-from operator import truediv
 import discord
 from discord.ext import commands
+import json
+from discord import *
+
+with open('json/setting.json', mode='r', encoding='utf8') as jsonFile:
+    jsonData = json.load(jsonFile)
 
 intents = discord.Intents.all()
 
-bot = commands.Bot(command_prefix='|', intents = intents)
+bot = commands.Bot(command_prefix = jsonData["PREFIX"], intents = intents)
 
 @bot.event
 async def on_ready():
@@ -13,17 +17,22 @@ async def on_ready():
 @bot.event
 async def on_member_join(member):
     print(f'{member} join!')
-    channel = bot.get_channel(933657649713647627)
+    channel = bot.get_channel(int(jsonData["JOIN_CHANNEL_ID"]))
     await channel.send(f'{member} join!')
 
 @bot.event
 async def on_member_remove(member):
     print(f'{member} leave!')
-    channel = bot.get_channel(933657680751493181)
+    channel = bot.get_channel(int(jsonData["LEAVE_CHANNEL_ID"]))
     await channel.send(f'{member} leave!')
 
 @bot.command()
 async def ping(ctx):
     await ctx.send(f'{round(bot.latency * 1000)}(ms)')
-
-bot.run('OTMzNjIzOTMzOTYwMzM1NDAw.YekPCw.jp2-fgGv7MIGtVK2L0qx92munJ4')
+    
+@bot.command()
+async def 老婆(ctx):
+    ayamePic = discord.File('C:\\Users\\joker\\Desktop\\Discord Bot\\DiscordColoBot\\pic\\AYAME.jpg')
+    await ctx.send(">_<  我在洗澡拉")
+    await ctx.send(file=ayamePic)
+bot.run(jsonData['BOT_TOKEN'])
