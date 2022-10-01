@@ -1,2 +1,2 @@
 # DiscordColoBot
-百鬼的機器人
+自製 Discord Bot
